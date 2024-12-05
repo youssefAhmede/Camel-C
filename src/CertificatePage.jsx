@@ -20,52 +20,52 @@ const CertificatePage = () => {
 
     const isArabicText = useMemo(() => isArabic(certificate?.name), [certificate]);
 
-    useEffect(() => {
-        const fetchCertificate = async () => {
-            try {
-                const response = await AxiosInstance.get(`/api/myschool/certificates/${profile_link}/${certId}/`);
-                if (response.status === 200) {
-                    setCertificate(response.data);
-                } else {
-                    alert("Certificate not found.");
-                }
-            } catch (error) {
-                alert("Failed to fetch certificate. Please try again later.");
-            }
-        };
-        fetchCertificate();
-    }, [certId, profile_link]);
+    // useEffect(() => {
+    //     const fetchCertificate = async () => {
+    //         try {
+    //             const response = await AxiosInstance.get(`/api/myschool/certificates/${profile_link}/${certId}/`);
+    //             if (response.status === 200) {
+    //                 setCertificate(response.data);
+    //             } else {
+    //                 alert("Certificate not found.");
+    //             }
+    //         } catch (error) {
+    //             alert("Failed to fetch certificate. Please try again later.");
+    //         }
+    //     };
+    //     fetchCertificate();
+    // }, [certId, profile_link]);
 
-    useEffect(() => {
-        const GetData = () => {
-            const url = profile_link ? `profile/${profile_link}/` : 'users/me/';
-            AxiosInstance.get(url)
-                .then((res) => {
-                    setMyData(res.data);
-                    setFirstName(res.data.first_name);
-                    setLastName(res.data.last_name);
-                    setEmail(res.data.email);
-                    setLoading(false);
-                    AxiosInstance.get(`/api/myschool/school/?user_id=${res.data.id}`)
-                        .then((res) => {
-                            const certificates = res.data.length > 0 ? res.data[0].certificates : [];
-                            setCertificates(certificates);
-                        })
-                        .catch((error) => {
-                            console.error("Error fetching certificates:", error);
-                        });
-                })
-                .catch((error) => {
-                    console.error("Error fetching user data:", error);
-                    setLoading(false);
-                });
-        };
-        GetData();
-    }, [profile_link]);
+    // useEffect(() => {
+    //     const GetData = () => {
+    //         const url = profile_link ? `profile/${profile_link}/` : 'users/me/';
+    //         AxiosInstance.get(url)
+    //             .then((res) => {
+    //                 setMyData(res.data);
+    //                 setFirstName(res.data.first_name);
+    //                 setLastName(res.data.last_name);
+    //                 setEmail(res.data.email);
+    //                 setLoading(false);
+    //                 AxiosInstance.get(`/api/myschool/school/?user_id=${res.data.id}`)
+    //                     .then((res) => {
+    //                         const certificates = res.data.length > 0 ? res.data[0].certificates : [];
+    //                         setCertificates(certificates);
+    //                     })
+    //                     .catch((error) => {
+    //                         console.error("Error fetching certificates:", error);
+    //                     });
+    //             })
+    //             .catch((error) => {
+    //                 console.error("Error fetching user data:", error);
+    //                 setLoading(false);
+    //             });
+    //     };
+    //     GetData();
+    // }, [profile_link]);
 
     const groupedCertificates = useMemo(() => {
         return certificates.reduce((acc, cert) => {
-            const key = cert.nameButton.split('/')[0].trim();
+            const key = cert.type.split('/')[0].trim();
             if (!acc[key]) {
                 acc[key] = [];
             }
@@ -108,7 +108,7 @@ const CertificatePage = () => {
       };
   };
 
-    const { truncated, remaining } = processText(certificate.firstLast);
+    const { truncated, remaining } = processText(certificate.content);
 
     return (
         <>
@@ -391,11 +391,11 @@ style={{ textAlign: "center", margin: "20px" }} >مقالات مشابهة</h3> 
                                           <div key={certIndex}  className="certificate-item"
 // style={{ margin: '10px',maxWidth:'250px' }}
 >
-                                              {/* {cert.nameButton} */}
+                                              {/* {cert.type} */}
                                               <MiniCertificate
                                                   userName={`${firstName} ${lastName}`}
                                                   courseName={cert.name}
-                                                  content={cert.firstLast}
+                                                  content={cert.content}
                                                   issueDate={new Date(cert.date).toLocaleDateString()}
                                                   profileLink={profile_link}
                                                   certId={cert.id}
