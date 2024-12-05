@@ -9,10 +9,11 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
-"deploy": "gh-pages -d build"
+"deploy": "gh-pages -d dist"
+
 
   },
-  "homepage": "https://<youssefAhmede>.github.io/<Camel-C>" ,
+  "homepage": "https://youssefAhmede.github.io/Camel-C",
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
